@@ -8,8 +8,23 @@
   scroll-behavior: smooth;
 }
 
+:root {
+  --brand-ink: #0f172a;
+  --brand-teal: #14b8a6;
+  --brand-coral: #fb7185;
+  --brand-gold: #fbbf24;
+  --brand-muted: #64748b;
+  --brand-soft: #f8fafc;
+  --brand-line: #e2e8f0;
+  --brand-card: #ffffff;
+}
+
 body {
   min-height: 100vh;
+  color: var(--brand-ink);
+  background:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.12), transparent 28vw),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 46%, #eefdfa 100%);
 }
 
 a {
@@ -18,7 +33,7 @@ a {
 }
 
 .app {
-  width: 80%;
+  width: min(1180px, 86%);
   margin: auto;
 }
 

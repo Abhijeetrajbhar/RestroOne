@@ -6,31 +6,17 @@ import foodRouter from "./routes/foodRoute.js"
 import 'dotenv/config'
 import cartRouter from "./routes/cartRoute.js"
 import orderRouter from "./routes/orderRoute.js"
-import dotenv from "dotenv";
-import mongoose from "mongoose";
 import Stripe from "stripe";
 
 // app config
 const app = express()
-const port = 4000
+const port = process.env.PORT || 4000
 
-dotenv.config();
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.error("MongoDB connection error:", err));
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 // middlewares
 app.use(express.json())
 app.use(cors())
-
-// db connection
-connectDB()
 
 // api endpoints
 app.use("/api/user", userRouter)
@@ -43,4 +29,14 @@ app.get("/", (req, res) => {
     res.send("API Working")
   });
 
-app.listen(port, () => console.log(`Server started on http://localhost:${port}`))
+const startServer = async () => {
+  try {
+    await connectDB()
+    app.listen(port, () => console.log(`Server started on http://localhost:${port}`))
+  } catch (error) {
+    console.error("Failed to start server due to DB connection error.")
+    process.exit(1)
+  }
+}
+
+startServer()

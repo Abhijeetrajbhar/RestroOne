@@ -2,11 +2,36 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 4%;
+    padding: 14px 4%;
+    background: white;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+.navbar-brand{
+    display: flex;
+    align-items: center;
+    gap: 18px;
 }
 .navbar .logo{
-    width: max(10%,80px);
+    width: 220px;
+}
+.navbar-brand span{
+    color: var(--brand-muted);
+    font-weight: 700;
+    border-left: 1px solid var(--brand-line);
+    padding-left: 18px;
 }
 .navbar .profile{
-    width: 40px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(20, 184, 166, 0.25);
+    padding: 2px;
+}
+@media (max-width:700px) {
+    .navbar .logo{
+        width: 160px;
+    }
+    .navbar-brand span{
+        display: none;
+    }
 }

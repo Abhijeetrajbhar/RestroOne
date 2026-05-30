@@ -2,23 +2,32 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 28px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(226, 232, 240, 0.86);
+    box-shadow: 0 22px 50px rgba(15, 23, 42, 0.06);
 }
 .explore-menu h1{
-    color: #262626;
-    font-weight: 500;
+    color: var(--brand-ink);
+    font-weight: 700;
+    font-size: clamp(28px, 3vw, 42px);
 }
 .explore-menu-text{
     max-width: 60%;
-    color: #808080;
+    color: var(--brand-muted);
+    line-height: 1.6;
 }
 .explore-menu-list{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 30px;
+    gap: 18px;
     text-align: center;
     margin: 20px 0px;
-    overflow-x: scroll;
+    overflow-x: auto;
+    padding: 4px 2px 12px;
+    scroll-snap-type: x proximity;
 }
 .explore-menu-list::-webkit-scrollbar{
     display: none;
@@ -26,29 +35,49 @@
 .explore-menu-list-item img{
     width: 7.5vw;
     min-width: 80px;
+    height: 7.5vw;
+    min-height: 80px;
+    object-fit: cover;
     cursor: pointer;
     border-radius: 50%;
-    transition: 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+.explore-menu-list-item{
+    min-width: 104px;
+    scroll-snap-align: start;
+}
+.explore-menu-list-item img:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
 }
 .explore-menu-list-item .active{
-    border: 4px solid tomato;
+    border: 4px solid var(--brand-teal);
     padding: 2px;
+    box-shadow: 0 18px 36px rgba(20, 184, 166, 0.22);
 }
 .explore-menu-list-item p{
     margin-top: 10px;
-    color: #747474;
+    color: var(--brand-muted);
     font-size: max(1.4vw,16px);
+    font-weight: 600;
     cursor: pointer;
 }
 .explore-menu hr{
     margin: 10px 0px;
     height: 2px;
-    background-color: #E2E2E2;
+    background-color: var(--brand-line);
     border: none;
 }
 @media (max-width:1050px) {
     .explore-menu-text{
         max-width: 100%;
         font-size: 14px;
+    }
+}
+@media (max-width:750px) {
+    .explore-menu{
+        padding: 22px 18px;
+        border-radius: 20px;
     }
 }

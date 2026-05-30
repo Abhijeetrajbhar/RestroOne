@@ -5,9 +5,19 @@
   box-sizing: border-box;
   font-family: Outfit;
 }
+:root {
+  --brand-ink: #0f172a;
+  --brand-teal: #14b8a6;
+  --brand-coral: #fb7185;
+  --brand-gold: #fbbf24;
+  --brand-muted: #64748b;
+  --brand-soft: #f8fafc;
+  --brand-line: #e2e8f0;
+}
 body{
   min-height: 100vh;
-  background-color: #725050;
+  color: var(--brand-ink);
+  background-color: #f8fafc;
 }
 a{
   text-decoration: none;
@@ -16,7 +26,7 @@ a{
 hr{
   border: none;
   height: 1px;
-  background-color: #A9A9A9;
+  background-color: var(--brand-line);
 }
 .app-content{
   display: flex;

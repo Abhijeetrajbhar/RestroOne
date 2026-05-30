@@ -1,7 +1,19 @@
 import { createContext, useEffect, useState } from "react";
 import { food_list, menu_list } from "../assets/assets";
 import axios from "axios";
-export const StoreContext = createContext(null);
+export const StoreContext = createContext({
+    url: "",
+    food_list: [],
+    menu_list: [],
+    cartItems: {},
+    addToCart: () => {},
+    removeFromCart: () => {},
+    getTotalCartAmount: () => 0,
+    token: "",
+    setToken: () => {},
+    loadCartData: () => {},
+    setCartItems: () => {}
+});
 
 const StoreContextProvider = (props) => {
 
@@ -43,7 +55,7 @@ const StoreContextProvider = (props) => {
 
     const fetchFoodList = async () => {
         const response = await axios.get(url + "/api/food/list");
-        setFoodList(response.data.data)
+        setFoodList(response?.data?.data ?? []);
     }
 
     const loadCartData = async (token) => {

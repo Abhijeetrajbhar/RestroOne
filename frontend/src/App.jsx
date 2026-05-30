@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Home from './pages/Home/Home'
 import Footer from './components/Footer/Footer'
 import Navbar from './components/Navbar/Navbar'
@@ -14,15 +14,16 @@ import Verify from './pages/Verify/Verify'
 const App = () => {
 
   const [showLogin,setShowLogin] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <>
     <ToastContainer/>
     {showLogin?<LoginPopup setShowLogin={setShowLogin}/>:<></>}
       <div className='app'>
-        <Navbar setShowLogin={setShowLogin}/>
+        <Navbar setShowLogin={setShowLogin} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
         <Routes>
-          <Route path='/' element={<Home />}/>
+          <Route path='/' element={<Home searchQuery={searchQuery} />}/>
           <Route path='/cart' element={<Cart />}/>
           <Route path='/order' element={<PlaceOrder />}/>
           <Route path='/myorders' element={<MyOrders />}/>

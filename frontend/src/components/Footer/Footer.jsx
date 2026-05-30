@@ -1,4 +1,3 @@
-import React from 'react'
 import './Footer.css'
 import { assets } from '../../assets/assets'
 
@@ -7,8 +6,15 @@ const Footer = () => {
     <div className='footer' id='footer'>
       <div className="footer-content">
         <div className="footer-content-left">
-            <img src={assets.logo} alt="" />
-            <p>Tomato is your go-to online food delivery platform that brings delicious meals from your favorite restaurants straight to your doorstep. With a wide variety of cuisines, easy ordering, and secure payments, we make food delivery fast, simple, and hassle-free. Whether its breakfast, lunch, dinner, or a late-night craving, Tomato is here to satisfy your hunger anytime, anywhere.</p>
+            <div className="footer-brand">
+                <img src={assets.logo} alt="RestroOne Logo" className="footer-logo" />
+            </div>
+            <p>RestroOne brings fresh meals from one trusted kitchen straight to your doorstep. Browse the menu, order quickly, and enjoy reliable delivery for breakfast, lunch, dinner, or late-night cravings.</p>
+            <div className="footer-highlights">
+                <span>Fresh daily</span>
+                <span>Fast delivery</span>
+                <span>Secure orders</span>
+            </div>
             <div className="footer-social-icons">
                 <img src={assets.facebook_icon} alt="" />
                 <img src={assets.twitter_icon} alt="" />
@@ -28,12 +34,12 @@ const Footer = () => {
             <h2>GET IN TOUCH</h2>
             <ul>
                 <li>123456789</li>
-                <li>contact@tomato.com</li>
+                <li>contact@restroOne.com</li>
             </ul>
         </div>
       </div>
       <hr />
-      <p className="footer-copyright">Copyright 2024 © Tomato.com - All Right Reserved.</p>
+      <p className="footer-copyright">Copyright 2026 (c) RestroOne.com - All Rights Reserved.</p>
     </div>
   )
 }

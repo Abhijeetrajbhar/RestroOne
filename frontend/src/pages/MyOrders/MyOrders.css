@@ -14,26 +14,29 @@
     gap: 30px;
     font-size: 14px;
     padding: 10px 20px;
-    color: #454545;
-    border: 1px solid tomato;
+    color: var(--brand-ink);
+    border: 1px solid rgba(20, 184, 166, 0.35);
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.07);
 }
 .my-orders-order img{
     width: 50px;
 }
 .my-orders-order p span{
-    color: tomato;
+    color: var(--brand-teal);
 }
 .my-orders-order p b{
     font-weight: 500;
-    color: #454545;
+    color: var(--brand-ink);
 }
 .my-orders button{
     border: none;
     padding: 12px 0px;
-    border-radius: 4px;
-    background-color: #FFE1E1;
+    border-radius: 10px;
+    background-color: rgba(20, 184, 166, 0.12);
     cursor: pointer;
-    color: #454545;
+    color: var(--brand-ink);
 }
 @media (max-width:900px) {
     .my-orders-order{
