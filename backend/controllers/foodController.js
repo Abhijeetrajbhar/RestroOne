@@ -15,6 +15,9 @@ const listFood = async (req, res) => {
 
 // add food
 const addFood = async (req, res) => {
+    if (!req.file) {
+        return res.json({ success: false, message: "Image is required" })
+    }
 
     let image_filename = `${req.file.filename}`
 
@@ -39,6 +42,9 @@ const removeFood = async (req, res) => {
     try {
 
         const food = await foodModel.findById(req.body.id);
+        if (!food) {
+            return res.json({ success: false, message: "Food not found" })
+        }
         fs.unlink(`uploads/${food.image}`, () => { })
 
         await foodModel.findByIdAndDelete(req.body.id)

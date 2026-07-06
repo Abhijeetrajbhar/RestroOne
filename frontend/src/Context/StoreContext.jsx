@@ -17,7 +17,7 @@ export const StoreContext = createContext({
 
 const StoreContextProvider = (props) => {
 
-    const url = "http://localhost:4000"
+    const url = import.meta.env.VITE_API_URL || "http://localhost:4000"
     const [food_list, setFoodList] = useState([]);
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("")
@@ -47,7 +47,9 @@ const StoreContextProvider = (props) => {
         for (const item in cartItems) {
             if (cartItems[item] > 0) {
                 let itemInfo = food_list.find((product) => product._id === item);
-                totalAmount += itemInfo.price * cartItems[item];
+                if (itemInfo) {
+                    totalAmount += itemInfo.price * cartItems[item];
+                }
             }
         }
         return totalAmount;

@@ -1,9 +1,11 @@
 import express from 'express';
 import { addFood, listFood, removeFood } from '../controllers/foodController.js';
 import multer from 'multer';
+import fs from 'fs';
 const foodRouter = express.Router();
 
 //Image Storage Engine (Saving Image to uploads folder & rename it)
+fs.mkdirSync('uploads', { recursive: true });
 
 const storage = multer.diskStorage({
     destination: 'uploads',

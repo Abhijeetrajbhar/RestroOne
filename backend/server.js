@@ -6,17 +6,25 @@ import foodRouter from "./routes/foodRoute.js"
 import 'dotenv/config'
 import cartRouter from "./routes/cartRoute.js"
 import orderRouter from "./routes/orderRoute.js"
-import Stripe from "stripe";
 
 // app config
 const app = express()
 const port = process.env.PORT || 4000
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
+  : []
 
 // middlewares
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      return callback(null, true)
+    }
+    return callback(new Error("Not allowed by CORS"))
+  },
+  credentials: true
+}))
 
 // api endpoints
 app.use("/api/user", userRouter)
