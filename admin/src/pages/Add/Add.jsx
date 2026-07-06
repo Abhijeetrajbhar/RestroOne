@@ -3,6 +3,7 @@ import './Add.css'
 import { assets,url } from '../../assets/assets';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { FOOD_CATEGORIES, STATIC_FOOD_TEMPLATES } from '../../assets/staticFoodCatalog';
 
 const Add = () => {
 
@@ -14,9 +15,50 @@ const Add = () => {
     });
 
     const [image, setImage] = useState(false);
+    const [imagePreview, setImagePreview] = useState("");
+    const [selectedTemplateId, setSelectedTemplateId] = useState("");
+
+    const visibleTemplates = STATIC_FOOD_TEMPLATES.filter((item) => item.category === data.category);
+
+    const getTemplateFile = async (template) => {
+        const response = await fetch(template.image);
+        const blob = await response.blob();
+        return new File([blob], `${template.id}.png`, { type: blob.type || 'image/png' });
+    }
+
+    const selectTemplate = async (template) => {
+        try {
+            const templateFile = await getTemplateFile(template);
+            setImage(templateFile);
+            setImagePreview(template.image);
+            setSelectedTemplateId(template.id);
+            setData({
+                name: template.name,
+                description: template.description,
+                price: template.price,
+                category: template.category
+            });
+        } catch (error) {
+            toast.error("Unable to use this dish image");
+        }
+    }
+
+    const onImageUpload = (event) => {
+        const file = event.target.files?.[0];
+        if (!file) {
+            return;
+        }
+        setImage(file);
+        setImagePreview(URL.createObjectURL(file));
+        setSelectedTemplateId("");
+    }
 
     const onSubmitHandler = async (event) => {
         event.preventDefault();
+        if (!image) {
+            toast.error("Please upload or choose a dish image");
+            return;
+        }
         const formData = new FormData();
         formData.append("name", data.name);
         formData.append("description", data.description);
@@ -33,6 +75,8 @@ const Add = () => {
                 category: "Salad"
             })
             setImage(false);
+            setImagePreview("");
+            setSelectedTemplateId("");
         }
         else{
             toast.error(response.data.message)
@@ -51,9 +95,9 @@ const Add = () => {
                 <div className='add-img-upload flex-col'>
                     <p>Upload image</p>
                     <label htmlFor="image">
-                        <img src={!image ? assets.upload_area : URL.createObjectURL(image)} alt="" />
+                        <img src={!imagePreview ? assets.upload_area : imagePreview} alt="" />
                     </label>
-                    <input onChange={(e) => { setImage(e.target.files[0]) }} type="file" id="image" hidden required />
+                    <input onChange={onImageUpload} type="file" id="image" accept="image/*" hidden />
                 </div>
                 <div className='add-product-name flex-col'>
                     <p>Product name</p>
@@ -66,20 +110,34 @@ const Add = () => {
                 <div className='add-category-price'>
                     <div className='add-category flex-col'>
                         <p>Product category</p>
-                        <select name='category' onChange={onChangeHandler} >
-                            <option value="Salad">Salad</option>
-                            <option value="Rolls">Rolls</option>
-                            <option value="Deserts">Deserts</option>
-                            <option value="Sandwich">Sandwich</option>
-                            <option value="Cake">Cake</option>
-                            <option value="Pure Veg">Pure Veg</option>
-                            <option value="Pasta">Pasta</option>
-                            <option value="Noodles">Noodles</option>
+                        <select name='category' onChange={onChangeHandler} value={data.category}>
+                            {FOOD_CATEGORIES.map((category) => (
+                                <option key={category} value={category}>{category}</option>
+                            ))}
                         </select>
                     </div>
                     <div className='add-price flex-col'>
                         <p>Product Price</p>
                         <input type="Number" name='price' onChange={onChangeHandler} value={data.price} placeholder='25' />
+                    </div>
+                </div>
+                <div className='add-template-picker flex-col'>
+                    <div>
+                        <p>Dish assets for {data.category}</p>
+                        <span>Choose a ready image or upload your own.</span>
+                    </div>
+                    <div className='add-template-grid'>
+                        {visibleTemplates.map((template) => (
+                            <button
+                                type='button'
+                                key={template.id}
+                                className={`add-template-card ${selectedTemplateId === template.id ? 'active' : ''}`}
+                                onClick={() => selectTemplate(template)}
+                            >
+                                <img src={template.image} alt={template.name} />
+                                <span>{template.name}</span>
+                            </button>
+                        ))}
                     </div>
                 </div>
                 <button type='submit' className='add-btn' >ADD</button>

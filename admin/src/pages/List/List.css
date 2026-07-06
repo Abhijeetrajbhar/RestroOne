@@ -14,6 +14,9 @@
 }
 .list-table-format img{
     width: 50px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
 }
 @media(max-width:600px){
 

@@ -31,6 +31,11 @@
     border-radius: 10px;
     color: var(--brand-ink);
 }
+.order-item img{
+    width: 52px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
 @media(max-width:1000px){
     .order-item{
         font-size: 12px;
