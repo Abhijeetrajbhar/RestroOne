@@ -10,15 +10,30 @@ import orderRouter from "./routes/orderRoute.js"
 // app config
 const app = express()
 const port = process.env.PORT || 4000
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
-  : []
+
+const normalizeOrigin = (origin) => {
+  if (!origin) {
+    return ""
+  }
+
+  try {
+    return new URL(origin.trim()).origin
+  } catch (error) {
+    return origin.trim().replace(/\/$/, "")
+  }
+}
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",") : [])
+].map(normalizeOrigin).filter(Boolean)
 
 // middlewares
 app.use(express.json())
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+    const requestOrigin = normalizeOrigin(origin)
+    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(requestOrigin)) {
       return callback(null, true)
     }
     return callback(new Error("Not allowed by CORS"))
