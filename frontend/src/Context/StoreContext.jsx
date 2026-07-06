@@ -1,9 +1,10 @@
 import { createContext, useEffect, useState } from "react";
-import { food_list, menu_list } from "../assets/assets";
+import { menu_list } from "../assets/assets";
 import axios from "axios";
 export const StoreContext = createContext({
     url: "",
     food_list: [],
+    foodListError: "",
     menu_list: [],
     cartItems: {},
     addToCart: () => {},
@@ -11,14 +12,18 @@ export const StoreContext = createContext({
     getTotalCartAmount: () => 0,
     token: "",
     setToken: () => {},
+    refreshFoodList: () => {},
     loadCartData: () => {},
     setCartItems: () => {}
 });
 
 const StoreContextProvider = (props) => {
 
-    const url = import.meta.env.VITE_API_URL || "http://localhost:4000"
+    const productionApiUrl = "https://restroone-wtu6.onrender.com"
+    const fallbackApiUrl = import.meta.env.PROD ? productionApiUrl : "http://localhost:4000"
+    const url = (import.meta.env.VITE_API_URL || fallbackApiUrl).trim().replace(/\/$/, "")
     const [food_list, setFoodList] = useState([]);
+    const [foodListError, setFoodListError] = useState("");
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("")
 
@@ -56,8 +61,21 @@ const StoreContextProvider = (props) => {
     }
 
     const fetchFoodList = async () => {
-        const response = await axios.get(url + "/api/food/list");
-        setFoodList(response?.data?.data ?? []);
+        try {
+            const response = await axios.get(url + "/api/food/list");
+            if (response?.data?.success) {
+                setFoodList(response.data.data ?? []);
+                setFoodListError("");
+            }
+            else {
+                setFoodList([]);
+                setFoodListError(response?.data?.message || "Unable to load menu items.");
+            }
+        } catch (error) {
+            setFoodList([]);
+            setFoodListError("Unable to load menu items. Please check the backend URL and CORS settings.");
+            console.error("Food list fetch failed:", error);
+        }
     }
 
     const loadCartData = async (token) => {
@@ -74,11 +92,15 @@ const StoreContextProvider = (props) => {
             }
         }
         loadData()
+        const refreshOnFocus = () => fetchFoodList();
+        window.addEventListener("focus", refreshOnFocus);
+        return () => window.removeEventListener("focus", refreshOnFocus);
     }, [])
 
     const contextValue = {
         url,
         food_list,
+        foodListError,
         menu_list,
         cartItems,
         addToCart,
@@ -86,6 +108,7 @@ const StoreContextProvider = (props) => {
         getTotalCartAmount,
         token,
         setToken,
+        refreshFoodList: fetchFoodList,
         loadCartData,
         setCartItems
     };

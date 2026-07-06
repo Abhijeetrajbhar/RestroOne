@@ -4,7 +4,7 @@ import fs from 'fs'
 // all food list
 const listFood = async (req, res) => {
     try {
-        const foods = await foodModel.find({})
+        const foods = await foodModel.find({}).sort({ _id: -1 })
         res.json({ success: true, data: foods })
     } catch (error) {
         console.log(error);
@@ -21,11 +21,11 @@ const addFood = async (req, res) => {
 
     let image_filename = `${req.file.filename}`
 
-    const food = new foodModel({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        category:req.body.category,
+        const food = new foodModel({
+        name: req.body.name?.trim(),
+        description: req.body.description?.trim(),
+        price: Number(req.body.price),
+        category:req.body.category?.trim(),
         image: image_filename,
     })
     try {

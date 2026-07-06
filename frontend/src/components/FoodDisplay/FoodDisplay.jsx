@@ -5,7 +5,7 @@ import { StoreContext } from '../../Context/StoreContext'
 
 const FoodDisplay = ({category, searchQuery = ""}) => {
 
-  const {food_list = []} = useContext(StoreContext);
+  const {food_list = [], foodListError = ""} = useContext(StoreContext);
   const normalizedSearch = searchQuery.trim().toLowerCase();
   const filteredFoodList = useMemo(() => {
     if (!Array.isArray(food_list)) {
@@ -44,7 +44,7 @@ const FoodDisplay = ({category, searchQuery = ""}) => {
             <p className="food-display-empty">No dishes match your search. Try a different name, ingredient, or category.</p>
           )
         ) : (
-          <p>No dishes available yet.</p>
+          <p className="food-display-empty">{foodListError || "No dishes available yet. Add items from the admin panel to show them here."}</p>
         )}
       </div>
     </div>
