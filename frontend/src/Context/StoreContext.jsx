@@ -22,8 +22,8 @@ const StoreContextProvider = (props) => {
     const productionApiUrl = "https://restroone-wtu6.onrender.com"
     const fallbackApiUrl = import.meta.env.PROD ? productionApiUrl : "http://localhost:4000"
     const configuredApiUrl = (import.meta.env.VITE_API_URL || "").trim()
-    const hasPlaceholderApiUrl = configuredApiUrl.includes("your-backend-domain")
-    const url = (hasPlaceholderApiUrl || !configuredApiUrl ? fallbackApiUrl : configuredApiUrl).replace(/\/$/, "")
+    const hasInvalidApiUrl = configuredApiUrl.includes("your-backend-domain") || configuredApiUrl.includes("restroone-backend.onrender.com")
+    const url = (hasInvalidApiUrl || !configuredApiUrl ? fallbackApiUrl : configuredApiUrl).replace(/\/$/, "")
     const [food_list, setFoodList] = useState([]);
     const [foodListError, setFoodListError] = useState("");
     const [cartItems, setCartItems] = useState({});

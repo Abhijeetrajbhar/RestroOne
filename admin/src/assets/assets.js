@@ -18,6 +18,6 @@ const productionApiUrl = 'https://restroone-wtu6.onrender.com'
 const fallbackApiUrl = import.meta.env.PROD ? productionApiUrl : 'http://localhost:4000'
 
 const configuredApiUrl = (import.meta.env.VITE_API_URL || '').trim()
-const hasPlaceholderApiUrl = configuredApiUrl.includes('your-backend-domain')
+const hasInvalidApiUrl = configuredApiUrl.includes('your-backend-domain') || configuredApiUrl.includes('restroone-backend.onrender.com')
 
-export const url = (hasPlaceholderApiUrl || !configuredApiUrl ? fallbackApiUrl : configuredApiUrl).replace(/\/$/, '')
+export const url = (hasInvalidApiUrl || !configuredApiUrl ? fallbackApiUrl : configuredApiUrl).replace(/\/$/, '')
